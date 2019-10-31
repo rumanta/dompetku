@@ -14,36 +14,39 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
 
     companion object {
-        private lateinit var instance: AppDatabase
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
-        @Synchronized
-        fun getInstance(context: Context): AppDatabase {
-            if (instance == null) {
-                instance = Room.databaseBuilder(
-                    context.getApplicationContext(),
-                    AppDatabase::class.java, "app_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
-                    .build()
+        fun getInstance(context: Context): AppDatabase =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
 
-            return instance
-        }
+
+        private fun buildDatabase(context: Context) =
+            Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java, "app_database"
+            )
+                .fallbackToDestructiveMigration()
+                .addCallback(roomCallback)
+                .build()
 
         private val roomCallback = object : RoomDatabase.Callback() {
             override fun onCreate(@NonNull db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                PopulateDBAsyncTask(instance).execute()
+                PopulateDBAsyncTask(INSTANCE).execute()
             }
         }
 
-        private class PopulateDBAsyncTask constructor(db: AppDatabase) :
+        private class PopulateDBAsyncTask constructor(db: AppDatabase?) :
             AsyncTask<Void, Void, Void>() {
-            private val transactionDao: TransactionDao
+            private lateinit var transactionDao: TransactionDao
 
             init {
-                transactionDao = db.transactionDao()
+                if (db != null) {
+                    transactionDao = db.transactionDao()
+                }
             }
 
 
