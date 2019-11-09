@@ -7,7 +7,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import java.util.*
 
 @Database(entities = [Transaction::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
@@ -49,9 +48,8 @@ abstract class AppDatabase : RoomDatabase() {
                 }
             }
 
-
             override fun doInBackground(vararg voids: Void): Void? {
-                transactionDao.insert(Transaction(1, "asd", 50000.0, 2, Date()))
+                transactionDao.insert(Transaction("asd", 50000.0, 2, 0))
                 return null
             }
         }

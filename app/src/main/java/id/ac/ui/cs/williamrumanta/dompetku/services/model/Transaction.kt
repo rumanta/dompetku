@@ -11,11 +11,13 @@ import java.util.Date
 @TypeConverters(Converters::class)
 
 data class Transaction(
-    @PrimaryKey(autoGenerate = true) val id: Long?,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "amount") val amount: Double,
     @ColumnInfo(name = "type") val type: Int,
-    @ColumnInfo(name = "date") val date: Date?
+    @ColumnInfo(name = "datetime") val date: Long
 ) {
-    constructor() : this(null, "", 0.0, 0, null)
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
+
+    constructor() : this("", 0.0, 0, 0)
 }

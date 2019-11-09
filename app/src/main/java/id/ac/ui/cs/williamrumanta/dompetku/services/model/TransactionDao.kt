@@ -14,6 +14,6 @@ interface TransactionDao {
     @Delete
     fun delete(transaction: Transaction)
 
-    @Query("SELECT * FROM transactions ORDER BY date DESC")
+    @Query("SELECT * FROM transactions ORDER BY datetime DESC")
     fun getAll(): LiveData<List<Transaction>>
 }

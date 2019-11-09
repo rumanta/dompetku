@@ -2,27 +2,36 @@ package id.ac.ui.cs.williamrumanta.dompetku.views.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import id.ac.ui.cs.williamrumanta.dompetku.R
-import id.ac.ui.cs.williamrumanta.dompetku.services.model.Transaction
-import id.ac.ui.cs.williamrumanta.dompetku.viewmodels.TransactionViewModel
+import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var transactionViewModel : TransactionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel::class.java)
-
-        val transactionObserver = Observer<List<Transaction>> { newList ->
-            Toast.makeText(this, "onChanged", Toast.LENGTH_SHORT).show()
+        supportFragmentManager.inTransaction {
+            add(R.id.root_layout, TransactionFragment.newInstances())
         }
-
-        transactionViewModel.getAllTransactions().observe(this, transactionObserver)
-
     }
+
+    inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
+        beginTransaction().func().commit()
+    }
+
+    fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment, null).addToBackStack("").commit()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        for (fragment in supportFragmentManager.fragments) {
+            fragment.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
 }
