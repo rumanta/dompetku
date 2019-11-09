@@ -44,7 +44,7 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionHo
 
     fun setTransactions(newTransactions: List<Transaction>?) {
         transactions = newTransactions as ArrayList<Transaction>
-        // notifyDataSetChanged()
+         notifyDataSetChanged()
     }
 
     inner class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

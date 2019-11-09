@@ -12,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Add Item"
+        android:text="@string/Add_Item"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Amount"
+        android:text="@string/Amount"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <EditText
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Name"
+        android:text="@string/Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <EditText
@@ -46,14 +46,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_edittext"
-        android:hint="e.g Bought a movie ticket"
+        android:hint="@string/Bought_a_movie_ticket"
         android:inputType="text" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Type"
+        android:text="@string/Type"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <RadioGroup
@@ -66,13 +66,13 @@
             android:id="@+id/radio_add_earning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Earning" />
+            android:text="@string/Earning" />
 
         <RadioButton
             android:id="@+id/radio_add_spending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Spending" />
+            android:text="@string/Spending" />
 
     </RadioGroup>
 
@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Date"
+        android:text="@string/Date"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <EditText
@@ -97,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Time"
+        android:text="@string/Time"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <EditText
@@ -108,7 +108,7 @@
         android:background="@drawable/bg_edittext"
         android:clickable="true"
         android:focusable="false"
-        android:hint="Pick a time" />
+        android:hint="@string/Pick_a_time" />
 
     <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@color/colorPrimary"
-            android:text="Confirm"
+            android:text="@string/Confirm"
             android:textColor="@color/cardview_light_background" />
     </com.google.android.flexbox.FlexboxLayout>
 </LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">dompetku</string>
+    <string name="summary">Ringkasan</string>
+    <string name="Add_Transaction">Tambah Transaksi</string>
+    <string name="Edit_Transaction">Ubah Transaksi</string>
+    <string name="Add_Item">Halaman Tambah</string>
+    <string name="Edit_Item">Halaman Ubah</string>
+    <string name="Amount">Jumlah</string>
+    <string name="Name">Nama</string>
+    <string name="Bought_a_movie_ticket">mis. Membeli tiket bioskop</string>
+    <string name="Type">Type</string>
+    <string name="Earning">Pendapatan</string>
+    <string name="Spending">Pengeluaran</string>
+    <string name="Date">Tanggal</string>
+    <string name="Time">Waktu</string>
+    <string name="Pick_a_time">Pilih waktu</string>
+    <string name="Confirm">Konfirmasi</string>
+</resources>
