@@ -143,8 +143,6 @@ class AddEditFormActivity : AppCompatActivity() {
         val name = editTextAddName.text.toString()
         val datetime = calendar.timeInMillis
 
-        Log.d("RADIO BUTTON", "" + radioSwitch)
-
         if (radioSwitch == -1) {
             Toast.makeText(
                 this, "On button click : nothing selected",
