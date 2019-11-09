@@ -49,7 +49,8 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
             override fun doInBackground(vararg voids: Void): Void? {
-                transactionDao.insert(Transaction("asd", 50000.0, 2, 0))
+                transactionDao.insert(Transaction("Uang Kos", 1000000.0, 1, 0))
+                transactionDao.insert(Transaction("Nonton Joker", 50000.0, 2, 0))
                 return null
             }
         }

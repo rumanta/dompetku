@@ -3,11 +3,11 @@ package id.ac.ui.cs.williamrumanta.dompetku.views.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import id.ac.ui.cs.williamrumanta.dompetku.R
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import id.ac.ui.cs.williamrumanta.dompetku.services.model.Transaction
 import id.ac.ui.cs.williamrumanta.dompetku.viewmodels.TransactionViewModel
 import id.ac.ui.cs.williamrumanta.dompetku.views.adapter.TransactionAdapter
-import id.ac.ui.cs.williamrumanta.dompetku.views.ui.AddFormActivity.Companion.RESULT_OK
+import id.ac.ui.cs.williamrumanta.dompetku.views.ui.AddEditFormActivity.Companion.RESULT_OK
 
 class TransactionFragment : Fragment() {
     private lateinit var transactionViewModel: TransactionViewModel
@@ -26,6 +26,8 @@ class TransactionFragment : Fragment() {
 
     companion object {
         val ADD_FORM_REQUEST: Int = 1
+        val EDIT_FORM_REQUEST: Int = 2
+
 
         fun newInstances(): TransactionFragment {
             return TransactionFragment()
@@ -41,8 +43,11 @@ class TransactionFragment : Fragment() {
         val btnAddTransaction =
             rootView.findViewById<FloatingActionButton>(R.id.btn_add_transaction)
 
+        val textViewTotalAmount = rootView.findViewById<TextView>(R.id.text_view_total_amount)
+
+
         btnAddTransaction.setOnClickListener {
-            val intent = Intent(activity, AddFormActivity::class.java)
+            val intent = Intent(activity, AddEditFormActivity::class.java)
             activity?.startActivityForResult(intent, ADD_FORM_REQUEST)
         }
 
@@ -61,38 +66,65 @@ class TransactionFragment : Fragment() {
 
         transactionViewModel.getAllTransactions().observe(this, transactionObserver)
 
+//        val totalAmount = this.adapter.getTotalAmount()
+
+        textViewTotalAmount.setText("Rp " + "550000")
+
+        adapter.setOnItemClickListener(object: TransactionAdapter.OnItemClickListener {
+            override fun onItemClick(transaction: Transaction) {
+                val intent = Intent(activity, AddEditFormActivity::class.java)
+                intent.putExtra(AddEditFormActivity.EXTRA_ID, transaction.id)
+                intent.putExtra(AddEditFormActivity.EXTRA_NAME, transaction.name)
+                intent.putExtra(AddEditFormActivity.EXTRA_AMOUNT, transaction.amount)
+                intent.putExtra(AddEditFormActivity.EXTRA_TYPE, transaction.type)
+                intent.putExtra(AddEditFormActivity.EXTRA_DATETIME, transaction.date)
+
+                startActivityForResult(intent, EDIT_FORM_REQUEST)
+            }
+        })
+
         return rootView
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.d("Masuk", "woi")
-
         if (requestCode == ADD_FORM_REQUEST && resultCode == RESULT_OK) {
-            Log.d("asu", "req")
             if (data != null) {
-                val name = data.getStringExtra(AddFormActivity.EXTRA_NAME)
-                val amount = data.getDoubleExtra(AddFormActivity.EXTRA_AMOUNT, 0.0)
-                val type = data.getIntExtra(AddFormActivity.EXTRA_TYPE, 1)
-                val datetime = data.getLongExtra(AddFormActivity.EXTRA_DATETIME, 0)
+                val name = data.getStringExtra(AddEditFormActivity.EXTRA_NAME)
+                val amount = data.getDoubleExtra(AddEditFormActivity.EXTRA_AMOUNT, 0.0)
+                val type = data.getIntExtra(AddEditFormActivity.EXTRA_TYPE, 1)
+                val datetime = data.getLongExtra(AddEditFormActivity.EXTRA_DATETIME, 0)
 
                 val transaction = Transaction(name, amount, type, datetime)
                 transactionViewModel.insert(transaction)
 
-                Log.d("berhasil", "asu")
-
                 Toast.makeText(activity, "Transaction saved!", Toast.LENGTH_SHORT).show()
             } else {
-                Log.d("gagal", "asu")
-
                 Toast.makeText(activity, "There is null transaction!", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            Log.d("anjing", "asu")
+        } else if (requestCode == EDIT_FORM_REQUEST && resultCode == RESULT_OK) {
 
-            Toast.makeText(activity, "Transaction is not saved!", Toast.LENGTH_SHORT).show()
+            val minusOne = -1
+
+            if (data != null) {
+                val id = data.getLongExtra(AddEditFormActivity.EXTRA_ID, minusOne.toLong())
+
+                if (id == minusOne.toLong()) {
+                    Toast.makeText(activity, "Transaction is failed to update", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                val name = data.getStringExtra(AddEditFormActivity.EXTRA_NAME)
+                val amount = data.getDoubleExtra(AddEditFormActivity.EXTRA_AMOUNT, 0.0)
+                val type = data.getIntExtra(AddEditFormActivity.EXTRA_TYPE, 1)
+                val datetime = data.getLongExtra(AddEditFormActivity.EXTRA_DATETIME, 0)
+
+                val transaction = Transaction(name, amount, type, datetime)
+                transaction.id = id
+
+                transactionViewModel.update(transaction)
+            }
         }
     }
-
 }

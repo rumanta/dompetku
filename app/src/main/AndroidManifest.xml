@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.ui.AddFormActivity"
+            android:name=".views.ui.AddEditFormActivity"
             android:parentActivityName=".views.ui.MainActivity" />
     </application>
 

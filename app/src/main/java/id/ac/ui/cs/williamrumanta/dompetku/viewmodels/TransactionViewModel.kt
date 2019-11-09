@@ -1,7 +1,6 @@
 package id.ac.ui.cs.williamrumanta.dompetku.viewmodels
 
 import android.app.Application
-import androidx.annotation.NonNull
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import id.ac.ui.cs.williamrumanta.dompetku.services.model.Transaction

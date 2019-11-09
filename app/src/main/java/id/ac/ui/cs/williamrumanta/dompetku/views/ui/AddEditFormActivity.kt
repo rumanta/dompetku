@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.time.Month
 import java.util.*
 
-class AddFormActivity : AppCompatActivity() {
+class AddEditFormActivity : AppCompatActivity() {
     private lateinit var editTextAddAmount: EditText
     private lateinit var editTextAddName: EditText
     private lateinit var btnAddConfirm: Button
@@ -23,6 +23,7 @@ class AddFormActivity : AppCompatActivity() {
 
     companion object {
         val RESULT_OK: Int = 2
+        val EXTRA_ID: String = "id.ac.ui.ac.williamrumanta.dompetku.EXTRA_ID"
         val EXTRA_NAME: String = "id.ac.ui.ac.williamrumanta.dompetku.EXTRA_NAME"
         val EXTRA_AMOUNT: String = "id.ac.ui.ac.williamrumanta.dompetku.EXTRA_AMOUNT"
         val EXTRA_DATETIME: String = "id.ac.ui.ac.williamrumanta.dompetku.EXTRA_DATETIME"
@@ -40,12 +41,45 @@ class AddFormActivity : AppCompatActivity() {
         editTextAddName = findViewById(R.id.edit_text_add_name)
         btnAddConfirm = findViewById(R.id.btn_add_confirm)
         radioGroup = findViewById(R.id.radio_group)
+        var cal = Calendar.getInstance()
 
-        val cal = Calendar.getInstance()
+        val incomingIntent = intent
+
+        if (incomingIntent.hasExtra(EXTRA_ID)) {
+            setTitle("Edit Transaction")
+            editTextAddAmount.setText(incomingIntent.getDoubleExtra(EXTRA_AMOUNT, 0.0).toString())
+            editTextAddName.setText(incomingIntent.getStringExtra(EXTRA_NAME))
+
+            val checkedRadioId = incomingIntent.getIntExtra(EXTRA_TYPE, 1)
+
+            if (checkedRadioId == 1) {
+
+                val radio: RadioButton = findViewById(R.id.radio_add_earning)
+                radioSwitch = 1
+                radioGroup.check(radio.id)
+
+            } else {
+                val radio: RadioButton = findViewById(R.id.radio_add_spending)
+                radioSwitch = 2
+                radioGroup.check(radio.id)
+            }
+
+
+            val dateMillis = incomingIntent.getLongExtra(EXTRA_DATETIME, 0)
+
+            cal.setTimeInMillis(dateMillis)
+
+            editTextTimePicker.setText(SimpleDateFormat("HH:mm").format(cal.time))
+
+        } else {
+            setTitle("Add Transaction")
+        }
+
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
+        editTextDatePicker.setText("" + (Month.of(month + 1)) + ", " + day + " " + year)
 
         val dpd = DatePickerDialog(
             this,
@@ -86,7 +120,6 @@ class AddFormActivity : AppCompatActivity() {
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radio: RadioButton = findViewById(checkedId)
-            Log.d("ASUU", "" + radio.text)
             if (radio.text.equals("Earning")) {
                 radioSwitch = TYPE_EARNING
             } else if (radio.text.equals("Spending")) {
@@ -97,7 +130,6 @@ class AddFormActivity : AppCompatActivity() {
         btnAddConfirm.setOnClickListener {
             saveTransaction()
         }
-
     }
 
     private fun saveTransaction() {
@@ -133,8 +165,14 @@ class AddFormActivity : AppCompatActivity() {
         data.putExtra(EXTRA_DATETIME, datetime)
         data.putExtra(EXTRA_TYPE, radioSwitch)
 
+        val minusOne = -1
 
-        Log.d("data", "" + data)
+        val id = intent.getLongExtra(EXTRA_ID, minusOne.toLong())
+
+
+        if (id != minusOne.toLong()) {
+            data.putExtra(EXTRA_ID, id)
+        }
 
         setResult(RESULT_OK, data)
 

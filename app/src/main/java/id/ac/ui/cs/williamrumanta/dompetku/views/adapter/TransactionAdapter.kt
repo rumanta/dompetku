@@ -10,6 +10,9 @@ import id.ac.ui.cs.williamrumanta.dompetku.services.model.Transaction
 import java.text.DecimalFormat
 
 class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionHolder>() {
+    internal lateinit var listener: OnItemClickListener
+
+    val dec = DecimalFormat("#,###.00")
 
     var transactions = arrayListOf<Transaction>()
 
@@ -23,9 +26,14 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionHo
         return transactions.size
     }
 
-    override fun onBindViewHolder(holder: TransactionHolder, position: Int) {
-        val dec = DecimalFormat("#,###.00")
+//    fun getTotalAmount(): String {
+//        val amount = transactions.fold(0.0) { sum, transaction ->
+//            sum + transaction.amount
+//        }
+//        return dec.format(amount)
+//    }
 
+    override fun onBindViewHolder(holder: TransactionHolder, position: Int) {
         val currentTransaction = transactions.get(position)
         holder.textViewName.setText(currentTransaction.name)
 
@@ -39,13 +47,31 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionHo
         // notifyDataSetChanged()
     }
 
-    class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal val textViewName: TextView
         internal val textViewAmount: TextView
 
         init {
             textViewName = itemView.findViewById(R.id.text_view_name)
             textViewAmount = itemView.findViewById(R.id.text_view_amount)
+            itemView.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    val position = adapterPosition
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(transactions.get(position))
+                    }
+
+                }
+            })
         }
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(transaction: Transaction)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
 }
+

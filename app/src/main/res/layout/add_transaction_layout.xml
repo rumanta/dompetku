@@ -30,7 +30,7 @@
         android:background="@drawable/bg_edittext_amount"
         android:ellipsize="start"
         android:gravity="center_horizontal"
-        android:hint="Rp 0,00"
+        android:hint="Rp 0.00"
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -113,6 +113,7 @@
     <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:alignItems="center"
         app:justifyContent="center">
 
@@ -121,6 +122,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Confirm" />
+            android:background="@color/colorPrimary"
+            android:text="Confirm"
+            android:textColor="@color/cardview_light_background" />
     </com.google.android.flexbox.FlexboxLayout>
 </LinearLayout>
